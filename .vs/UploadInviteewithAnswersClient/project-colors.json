@@ -1,0 +1,16 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "79a3c31e-85fe-46e7-bd8f-5ccd0715d14e": {
+      "ProjectGuid": "79a3c31e-85fe-46e7-bd8f-5ccd0715d14e",
+      "DisplayName": "UploadInviteewithAnswersClient",
+      "ColorIndex": 0
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Miscellaneous Files",
+      "ColorIndex": -1
+    }
+  },
+  "NextColorIndex": 1
+}
