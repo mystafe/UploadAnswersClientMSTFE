@@ -37,8 +37,6 @@ namespace UploadInviteewithAnswersClient
                     TokenPath = "https://pilot-api.alternacx.com/token";
                     clientid = "fa750f45-07d3-4549-b54f-45abda5491d6";
                     clientsecret = "60d620d3b6e1078a5ad00e914ac7c523";
-                    //segment1 = "YKSEGMENT";
-                    //segment2 = "IS_VIP";
                     uploadUrl = "https://pilot-api.alternacx.com/api/upload/inviteesWithAnswers";
 
                     break;
@@ -47,8 +45,6 @@ namespace UploadInviteewithAnswersClient
                     TokenPath = "https://pilot2-api.alternacx.com/token";
                     clientid = "121d6c4a-fced-481f-8a9d-164f6094c0bb";
                     clientsecret = "76238ea9bc4af9bd8db0640b5d0d5d58";
-                    //segment1 = "App_Version";
-                    //segment2 = "Speaker";
                     uploadUrl = "https://pilot2-api.alternacx.com/api/upload/inviteesWithAnswers";
                     break;
                 default:
