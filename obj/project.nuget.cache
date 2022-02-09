@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "euK49gMdTpj6mm/irQZm2QvZ3dbYVEqee9Mm+N4fP58PstrXTLCq3q6kFqSOpYDuq31ETk27TWzxZfHFJU39iw==",
+  "dgSpecHash": "wq8wN+YBW50gfpzrQ5NaknNh/AsXMrljLA4hw2USPHW9UHXuwNRKmmL1Snf0p7Vg+v9y6ZLBZqEE7qwnll3fkg==",
   "success": true,
   "projectFilePath": "C:\\Users\\Mustafa\\Documents\\UploadAnswersClientMSTFE\\UploadInviteewithAnswersClient.csproj",
   "expectedPackageFiles": [
@@ -106,7 +106,8 @@
     "C:\\Users\\Mustafa\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
     "C:\\Users\\Mustafa\\.nuget\\packages\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512",
     "C:\\Users\\Mustafa\\.nuget\\packages\\system.xml.xpath\\4.3.0\\system.xml.xpath.4.3.0.nupkg.sha512",
-    "C:\\Users\\Mustafa\\.nuget\\packages\\system.xml.xpath.xmldocument\\4.3.0\\system.xml.xpath.xmldocument.4.3.0.nupkg.sha512"
+    "C:\\Users\\Mustafa\\.nuget\\packages\\system.xml.xpath.xmldocument\\4.3.0\\system.xml.xpath.xmldocument.4.3.0.nupkg.sha512",
+    "C:\\Users\\Mustafa\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\5.0.14\\microsoft.netcore.app.host.win-x64.5.0.14.nupkg.sha512"
   ],
   "logs": []
 }

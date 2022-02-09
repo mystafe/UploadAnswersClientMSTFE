@@ -15,51 +15,17 @@ namespace UploadInviteewithAnswersClient
     class Program
     {
         static string _token = "";
-        static string TokenPath = "";
-        static string clientid = "";
-        static string clientsecret = "";
-        static string uploadUrl = "";
+
         static async Task Main(string[] args)
         {
             Console.WriteLine("Please type your environment:       (staging / pilot / pilot2)");
             string env = Console.ReadLine().ToLower();
-            switch (env)
+            Environment environment=new(env);
+            env=environment.environmentName;
+            Console.WriteLine(env+" is selected.");
+            if (string.IsNullOrEmpty(environment.bearer_token))
             {
-                case "staging":
-                    Console.WriteLine("staging is selected");
-                    TokenPath = "https://staging-api.alternacx.com/token";
-                    clientid = "e7f8ae6d-92ac-4443-8f6d-1210b4dd21c3";
-                    clientsecret = "ce4718e080d155ae7c3e7fbeb2793198";
-                    uploadUrl = "https://staging-api.alternacx.com/api/upload/inviteesWithAnswers";
-                    break;
-                case "pilot":
-                    Console.WriteLine("pilot is selected");
-                    TokenPath = "https://pilot-api.alternacx.com/token";
-                    clientid = "fa750f45-07d3-4549-b54f-45abda5491d6";
-                    clientsecret = "60d620d3b6e1078a5ad00e914ac7c523";
-                    uploadUrl = "https://pilot-api.alternacx.com/api/upload/inviteesWithAnswers";
-
-                    break;
-                case "pilot2":
-                    Console.WriteLine("pilot2 is selected");
-                    TokenPath = "https://pilot2-api.alternacx.com/token";
-                    clientid = "121d6c4a-fced-481f-8a9d-164f6094c0bb";
-                    clientsecret = "76238ea9bc4af9bd8db0640b5d0d5d58";
-                    uploadUrl = "https://pilot2-api.alternacx.com/api/upload/inviteesWithAnswers";
-                    break;
-                default:
-                    Console.WriteLine("Wrong environment, staging is selected as default environment");
-                    env = "staging";
-                    TokenPath = "https://staging-api.alternacx.com/token";
-                    clientid = "e7f8ae6d-92ac-4443-8f6d-1210b4dd21c3";
-                    clientsecret = "ce4718e080d155ae7c3e7fbeb2793198";
-                    uploadUrl = "https://staging-api.alternacx.com/api/upload/inviteesWithAnswers";
-                    break;
-            }
-
-            if (string.IsNullOrEmpty(_token))
-            {
-                GetToken();
+                GetToken(environment);
             }
             Random num = new ();
 
@@ -74,10 +40,10 @@ namespace UploadInviteewithAnswersClient
                 int number = num.Next(1000, 100000);
                 Invitee invitee = new ()
                 {
-                    InviteeId = env + "_poc_" + number,
-                    InviteeMSISDN = "90570" + number,
-                    InviteeFullName = env + "_poc_" + number,
-                    InviteeEmail = env + "_poc_" + number + "@alternatest.com",
+                    InviteeId =p.InviteeId,
+                    InviteeMSISDN = p.InviteeMSISDN,
+                    InviteeFullName =p.InviteeFullName,
+                    InviteeEmail = p.InviteeEmail,
                     InviteeLanguage = p.InviteeLanguage,
                     InviteeLocation = p.InviteeLocation,
                     TransactionChannel = p.TransactionChannel,
@@ -126,7 +92,7 @@ namespace UploadInviteewithAnswersClient
                         {
                             var json = JsonConvert.SerializeObject(invitees).ToString();
                             var data = JsonConvert.DeserializeObject(json).ToString();
-                            var url = uploadUrl;
+                            var url = environment.uploadPath;
                             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + _token);
                             var response = await client.PostAsync(url, new StringContent(data, Encoding.UTF8, "application/json"));
                             var result = response.Content.ReadAsStringAsync().Result;
@@ -153,9 +119,9 @@ namespace UploadInviteewithAnswersClient
             await package.LoadAsync(file);
             var ws = package.Workbook.Worksheets[PositionID: 0];
             int row = 2;
-            int segInd, col, txc, txt, inl, txd, inc, sg1, sg2, qnp, vl1, qcm, vl2, asd, lct, cs1, cs2, cs3, cs4, cs5, cs6, cs7, cs8, cs9, cs10;
+            int segInd, col,iid,ims,ifn,iem, txc, txt, inl, txd, inc, sg1, sg2, qnp, vl1, qcm, vl2, asd, lct, cs1, cs2, cs3, cs4, cs5, cs6, cs7, cs8, cs9, cs10;
             col = 1; segInd = 0;
-            txc = txt = inl = txd = inc = sg1 = sg2 = qnp = vl1 = qcm = vl2 = asd = lct = cs1 = cs2 = cs3 = cs4 = cs5 = cs6 = cs7 = cs8 = cs9 = cs10 = 0;
+            iid=ims=ifn=iem =txc = txt = inl = txd = inc = sg1 = sg2 = qnp = vl1 = qcm = vl2 = asd = lct = cs1 = cs2 = cs3 = cs4 = cs5 = cs6 = cs7 = cs8 = cs9 = cs10 = 0;
             List<object> AllSegments = new List<object>();
 
             List<InviteeSegment> tempSegments = new List<InviteeSegment>();
@@ -164,12 +130,17 @@ namespace UploadInviteewithAnswersClient
             SegmentColumn segmentList = new SegmentColumn();
             List<InviteeSegment> newSegments = new List<InviteeSegment>();
             var aa = ws.Cells;
-
             try
             {
                 int rowCount = aa.Worksheet.Columns.EndColumn;
+                Random randomnumber=new();
+                int rand=randomnumber.Next(10000,1000000);
                 for (int col1 = 1; col1 <= rowCount; col1++)
                 {
+                    if (aa[1, col1].Value.ToString().Contains("InviteeId")) { iid = col1; }
+                    if (aa[1, col1].Value.ToString().Contains("InviteeMSISDN")) { ims = col1; }
+                    if (aa[1, col1].Value.ToString().Contains("InviteeFullname")) { ifn = col1; }
+                    if (aa[1, col1].Value.ToString().Contains("InviteeEmail")) { iem = col1; }                    
                     if (aa[1, col1].Value.ToString().Contains("TransactionChannel")) { txc = col1; }
                     if (aa[1, col1].Value.ToString().Contains("TransactionType")) { txt = col1; }
                     if (aa[1, col1].Value.ToString().Contains("InviteeLanguage")) { inl = col1; }
@@ -181,10 +152,7 @@ namespace UploadInviteewithAnswersClient
                         InviteeSegment invSegment1 = new InviteeSegment(rowValue, col1.ToString());
                         segmentList = new SegmentColumn(col1, rowValue);
                         AllOf.Add(segmentList);
-                        segInd++;
-
                     }
-
                     if (aa[1, col1].Value.ToString().Contains("Question_NPS")) { qnp = col1; }
                     if (aa[1, col1].Value.ToString().Contains("Question1Value")) { vl1 = col1; }
                     if (aa[1, col1].Value.ToString().Contains("Question_Comment")) { qcm = col1; }
@@ -206,10 +174,11 @@ namespace UploadInviteewithAnswersClient
                 while (string.IsNullOrWhiteSpace(aa[row, col].Value?.ToString()) == false)
                 {
                     Invitee p = new();
-                    //p.InviteeId = aa[row, col + 1].Value.ToString();
-                    // p.InviteeEmail = aa[row, col + 2].Value.ToString();
-                    // p.InviteeMSISDN = aa[row, col + 3].Value.ToString();
-                    // p.InviteeFullName = aa[row, col + 4].Value.ToString();
+                    int r=rand+row;
+                    p.InviteeId = iid > 0 && aa[row, iid].Value != null ? aa[row, iid].Value?.ToString() : "TestUser_"+r.ToString();
+                    p.InviteeEmail = iem > 0 && aa[row, iem].Value != null ? aa[row, iem].Value?.ToString() : r.ToString()+"@alternatest.com";
+                    p.InviteeMSISDN = ims > 0 && aa[row, ims].Value != null ? aa[row, ims].Value?.ToString() : "057000"+r.ToString();
+                    p.InviteeFullName = ifn > 0 && aa[row, ifn].Value != null ? aa[row, ifn].Value?.ToString() : "TestUser "+r.ToString();
                     p.InviteeLanguage = inl > 0 && aa[row, inl].Value != null ? aa[row, inl].Value.ToString() : "tr";    
                     p.TransactionChannel = txc > 0 && aa[row, txc].Value != null ? aa[row, txc].Value?.ToString() : "";
                     p.TransactionType = txt > 0 && aa[row, txt].Value != null ? aa[row, txt].Value?.ToString() : "";
@@ -297,15 +266,15 @@ namespace UploadInviteewithAnswersClient
             return output;
         }
 
-        private static void GetToken()
+        private static void GetToken(Environment env)
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, TokenPath)
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, env.tokenPath)
             {
                 Content = new FormUrlEncodedContent(new Dictionary<string, string>
                 {
-                    {"client_id", clientid},
-                    {"client_secret", clientsecret},
+                    {"client_id", env.client_id},
+                    {"client_secret", env.client_secret},
                     {"grant_type", "client_credentials"}
                 })
             };

@@ -7,20 +7,12 @@ namespace UploadInviteewithAnswersClient
     {
         public string SegmentGroupName { get; set; }
         public string SegmentId { get; set; }
-        public InviteeSegment()
-        {
-        }
         public InviteeSegment(string sgr, string sid)
         {
             this.SegmentGroupName = sgr;
             this.SegmentId = sid;
         }
 
-        public void AddSegment(string sgr, string sid)
-        {
-            this.SegmentGroupName = sgr;
-            this.SegmentId = sid;
-        }
     }
     public class SegmentColumn
     {
