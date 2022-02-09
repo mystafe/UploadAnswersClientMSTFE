@@ -27,39 +27,17 @@ namespace UploadInviteewithAnswersClient
             {
                 GetToken(environment);
             }
-            Random num = new ();
-
             List<Invitee> invitees = new List<Invitee>();
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             var file = new FileInfo(fileName: @"C:\Users\Mustafa\Documents\answer1.xlsx");
             using var package = new ExcelPackage(file);
             List<Invitee> peopleFromExcel = await LoadExcelFile(file);
 
-            foreach (var p in peopleFromExcel)
+            foreach (Invitee p in peopleFromExcel)
             {
-                int number = num.Next(1000, 100000);
-                Invitee invitee = new ()
+                Invitee invitee = new (p)
                 {
-                    InviteeId =p.InviteeId,
-                    InviteeMSISDN = p.InviteeMSISDN,
-                    InviteeFullName =p.InviteeFullName,
-                    InviteeEmail = p.InviteeEmail,
-                    InviteeLanguage = p.InviteeLanguage,
-                    InviteeLocation = p.InviteeLocation,
-                    TransactionChannel = p.TransactionChannel,
-                    TransactionType = p.TransactionType,
-                    TransactionDate = p.TransactionDate,
-                    InteractionChannel = p.InteractionChannel,
-                    CustomData1 = p.CustomData1,
-                    CustomData2 = p.CustomData2,
-                    CustomData3 = p.CustomData3,
-                    CustomData4 = p.CustomData4,
-                    CustomData5 = p.CustomData5,
-                    CustomData6 = p.CustomData6,
-                    CustomData7 = p.CustomData7,
-                    CustomData8 = p.CustomData8,
-                    CustomData9 = p.CustomData9,
-                    CustomData10 = p.CustomData10,
+
                     InviteeSegments = new List<InviteeSegment>(p.InviteeSegments),
                     InviteeAnswers = new List<InviteeAnswer>()
                     {
@@ -96,7 +74,7 @@ namespace UploadInviteewithAnswersClient
                             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + _token);
                             var response = await client.PostAsync(url, new StringContent(data, Encoding.UTF8, "application/json"));
                             var result = response.Content.ReadAsStringAsync().Result;
-                            Console.WriteLine(response);
+                            Console.WriteLine((int)response.StatusCode);                                               
                             Console.WriteLine(result);
                             Console.WriteLine(data);
                             Console.ReadLine();
@@ -106,10 +84,8 @@ namespace UploadInviteewithAnswersClient
                     {
                         throw;
                     }
-
                 }
             }
-            else { Console.WriteLine("kayıt yok"); }
 
         }
         private static async Task<List<Invitee>> LoadExcelFile(FileInfo file)
@@ -119,8 +95,8 @@ namespace UploadInviteewithAnswersClient
             await package.LoadAsync(file);
             var ws = package.Workbook.Worksheets[PositionID: 0];
             int row = 2;
-            int segInd, col,iid,ims,ifn,iem, txc, txt, inl, txd, inc, sg1, sg2, qnp, vl1, qcm, vl2, asd, lct, cs1, cs2, cs3, cs4, cs5, cs6, cs7, cs8, cs9, cs10;
-            col = 1; segInd = 0;
+            int col,iid,ims,ifn,iem, txc, txt, inl, txd, inc, sg1, sg2, qnp, vl1, qcm, vl2, asd, lct, cs1, cs2, cs3, cs4, cs5, cs6, cs7, cs8, cs9, cs10;
+            col = 1;
             iid=ims=ifn=iem =txc = txt = inl = txd = inc = sg1 = sg2 = qnp = vl1 = qcm = vl2 = asd = lct = cs1 = cs2 = cs3 = cs4 = cs5 = cs6 = cs7 = cs8 = cs9 = cs10 = 0;
             List<object> AllSegments = new List<object>();
 
@@ -133,19 +109,40 @@ namespace UploadInviteewithAnswersClient
             try
             {
                 int rowCount = aa.Worksheet.Columns.EndColumn;
-                Random randomnumber=new();
-                int rand=randomnumber.Next(10000,1000000);
+                Random random=new();
+                int number=random.Next(10000,1000000);
                 for (int col1 = 1; col1 <= rowCount; col1++)
                 {
-                    if (aa[1, col1].Value.ToString().Contains("InviteeId")) { iid = col1; }
-                    if (aa[1, col1].Value.ToString().Contains("InviteeMSISDN")) { ims = col1; }
-                    if (aa[1, col1].Value.ToString().Contains("InviteeFullname")) { ifn = col1; }
-                    if (aa[1, col1].Value.ToString().Contains("InviteeEmail")) { iem = col1; }                    
-                    if (aa[1, col1].Value.ToString().Contains("TransactionChannel")) { txc = col1; }
-                    if (aa[1, col1].Value.ToString().Contains("TransactionType")) { txt = col1; }
-                    if (aa[1, col1].Value.ToString().Contains("InviteeLanguage")) { inl = col1; }
-                    if (aa[1, col1].Value.ToString().Contains("TransactionDate")) { txd = col1; }
-                    if (aa[1, col1].Value.ToString().Contains("InteractionChannel")) { inc = col1; }
+                    if (aa[1, col1].Value.ToString().Trim().ToLower()=="inviteeid") { iid = col1; }
+                    if ((aa[1, col1].Value.ToString().Trim().ToLower()=="inviteemsisdn")|| (aa[1, col1].Value.ToString().Trim().ToLower()=="msisdn"))
+                     { ims = col1; }
+                    if ((aa[1, col1].Value.ToString().Trim().ToLower()=="inviteefullname")|| (aa[1, col1].Value.ToString().Trim().ToLower()=="fullname"))
+                     { ifn = col1; }
+                    if ((aa[1, col1].Value.ToString().Trim().ToLower()=="inviteeemail")|| (aa[1, col1].Value.ToString().Trim().ToLower()=="email"))
+                     { iem = col1; }
+                    if ((aa[1, col1].Value.ToString().Trim().ToLower()=="inviteelanguage")|| (aa[1, col1].Value.ToString().Trim().ToLower()=="language"))
+                     { inl = col1; }
+                    if ((aa[1, col1].Value.ToString().Trim().ToLower()=="inviteelocation")|| (aa[1, col1].Value.ToString().Trim().ToLower()=="location"))
+                     { lct = col1; }
+                    if (aa[1, col1].Value.ToString().Trim().ToLower()=="transactionchannel") { txc = col1; }
+                    if (aa[1, col1].Value.ToString().Trim().ToLower()=="transactiontype") { txt = col1; }
+                    if (aa[1, col1].Value.ToString().Trim().ToLower()=="transactiondate") { txd = col1; }
+                    if (aa[1, col1].Value.ToString().Trim().ToLower()=="interactionchannel") { inc = col1; }
+                    if (aa[1, col1].Value.ToString().Trim().ToLower()=="answereddate") { asd = col1; }
+                    if (aa[1, col1].Value.ToString().Trim().ToLower()=="customdata1") { cs1 = col1; }
+                    if (aa[1, col1].Value.ToString().Trim().ToLower() == "customdata2") { cs2 = col1; }
+                    if (aa[1, col1].Value.ToString().Trim().ToLower() == "customdata3") { cs3 = col1; }
+                    if (aa[1, col1].Value.ToString().Trim().ToLower() == "customdata4") { cs4 = col1; }
+                    if (aa[1, col1].Value.ToString().Trim().ToLower() == "customdata5") { cs5 = col1; }
+                    if (aa[1, col1].Value.ToString().Trim().ToLower() == "customdata6") { cs6 = col1; }
+                    if (aa[1, col1].Value.ToString().Trim().ToLower() == "customdata7") { cs7 = col1; }
+                    if (aa[1, col1].Value.ToString().Trim().ToLower() == "customdata8") { cs8 = col1; }
+                    if (aa[1, col1].Value.ToString().Trim().ToLower() == "customdata9") { cs9 = col1; }
+                    if (aa[1, col1].Value.ToString().Trim().ToLower()=="customData10") { cs10 = col1; }
+                    if (aa[1, col1].Value.ToString().Contains("Question_NPS")) { qnp = col1; }
+                    if (aa[1, col1].Value.ToString().Contains("Question1Value")) { vl1 = col1; }
+                    if (aa[1, col1].Value.ToString().Contains("Question_Comment")) { qcm = col1; }
+                    if (aa[1, col1].Value.ToString().Contains("Question2Value")) { vl2 = col1; }
                     if (aa[1, col1].Value.ToString().Contains("InviteeSegment"))
                     {
                         string rowValue = aa[1, col1].Value.ToString().Remove(0, 15).ToString();
@@ -153,28 +150,13 @@ namespace UploadInviteewithAnswersClient
                         segmentList = new SegmentColumn(col1, rowValue);
                         AllOf.Add(segmentList);
                     }
-                    if (aa[1, col1].Value.ToString().Contains("Question_NPS")) { qnp = col1; }
-                    if (aa[1, col1].Value.ToString().Contains("Question1Value")) { vl1 = col1; }
-                    if (aa[1, col1].Value.ToString().Contains("Question_Comment")) { qcm = col1; }
-                    if (aa[1, col1].Value.ToString().Contains("Question2Value")) { vl2 = col1; }
-                    if (aa[1, col1].Value.ToString().Contains("AnsweredDate")) { asd = col1; }
-                    if (aa[1, col1].Value.ToString().Contains("Location")) { lct = col1; }
-                    if (aa[1, col1].Value.ToString()=="CustomData1") { cs1 = col1; }
-                    if (aa[1, col1].Value.ToString() == "CustomData2") { cs2 = col1; }
-                    if (aa[1, col1].Value.ToString() == "CustomData3") { cs3 = col1; }
-                    if (aa[1, col1].Value.ToString() == "CustomData4") { cs4 = col1; }
-                    if (aa[1, col1].Value.ToString() == "CustomData5") { cs5 = col1; }
-                    if (aa[1, col1].Value.ToString() == "CustomData6") { cs6 = col1; }
-                    if (aa[1, col1].Value.ToString() == "CustomData7") { cs7 = col1; }
-                    if (aa[1, col1].Value.ToString() == "CustomData8") { cs8 = col1; }
-                    if (aa[1, col1].Value.ToString() == "CustomData9") { cs9 = col1; }
-                    if (aa[1, col1].Value.ToString()=="CustomData10") { cs10 = col1; }
+
                 }
 
                 while (string.IsNullOrWhiteSpace(aa[row, col].Value?.ToString()) == false)
                 {
                     Invitee p = new();
-                    int r=rand+row;
+                    int r=number+row;
                     p.InviteeId = iid > 0 && aa[row, iid].Value != null ? aa[row, iid].Value?.ToString() : "TestUser_"+r.ToString();
                     p.InviteeEmail = iem > 0 && aa[row, iem].Value != null ? aa[row, iem].Value?.ToString() : r.ToString()+"@alternatest.com";
                     p.InviteeMSISDN = ims > 0 && aa[row, ims].Value != null ? aa[row, ims].Value?.ToString() : "057000"+r.ToString();

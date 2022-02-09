@@ -5,13 +5,15 @@ namespace UploadInviteewithAnswersClient
 {
     public class InviteeSegment
     {
+        public InviteeSegment(string segmentGroupName, string segmentId)
+        {
+            this.SegmentGroupName = segmentGroupName;
+            this.SegmentId = segmentId;
+
+        }
         public string SegmentGroupName { get; set; }
         public string SegmentId { get; set; }
-        public InviteeSegment(string sgr, string sid)
-        {
-            this.SegmentGroupName = sgr;
-            this.SegmentId = sid;
-        }
+
 
     }
     public class SegmentColumn
@@ -38,6 +40,34 @@ namespace UploadInviteewithAnswersClient
 
     public class Invitee
     {
+
+        public Invitee (Invitee p)
+        {
+           this.InviteeId = p.InviteeId;
+            this.InviteeEmail = p.InviteeEmail;
+            this.InviteeMSISDN = p.InviteeMSISDN;
+            this.InviteeFullName = p.InviteeFullName;
+            this.InviteeLanguage = p.InviteeLanguage;
+            this.InviteeLocation = p.InviteeLocation;
+            this.TransactionChannel = p.TransactionChannel;
+            this.TransactionType = p.TransactionType;
+            this.TransactionDate = p.TransactionDate;
+            this.InteractionChannel = p.InteractionChannel;
+            this.CustomData1 = p.CustomData1;
+            this.CustomData2 = p.CustomData2;
+            this.CustomData3 = p.CustomData3;
+            this.CustomData4 = p.CustomData4;
+            this.CustomData5 = p.CustomData5;
+            this.CustomData6 = p.CustomData6;
+            this.CustomData7 = p.CustomData7;
+            this.CustomData8 = p.CustomData8;
+            this.CustomData9 = p.CustomData9;
+            this.CustomData10 =p.CustomData10;
+        }
+        public Invitee()
+        {
+
+        }
         public string InviteeId { get; set; }
         public string InviteeEmail { get; set; }
         public string InviteeMSISDN { get; set; }
@@ -60,6 +90,8 @@ namespace UploadInviteewithAnswersClient
         public string CustomData8 { get; set; }
         public string CustomData9 { get; set; }
         public string CustomData10 { get; set; }
+
+
 
     }
 
