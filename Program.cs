@@ -95,16 +95,19 @@ namespace UploadInviteewithAnswersClient
             await package.LoadAsync(file);
             var ws = package.Workbook.Worksheets[PositionID: 0];
             int row = 2;
-            int col,iid,ims,ifn,iem, txc, txt, inl, txd, inc, sg1, sg2, qnp, vl1, qcm, vl2, asd, lct, cs1, cs2, cs3, cs4, cs5, cs6, cs7, cs8, cs9, cs10;
+            int col,iid,ims,ifn,iem, txc, txt, inl, txd, inc, sg1, sg2, qnp, vl1, qcm, vl2, asd, lct, cs1, cs2, cs3, cs4, cs5, cs6, cs7, cs8, cs9, cs10,que;
             col = 1;
-            iid=ims=ifn=iem =txc = txt = inl = txd = inc = sg1 = sg2 = qnp = vl1 = qcm = vl2 = asd = lct = cs1 = cs2 = cs3 = cs4 = cs5 = cs6 = cs7 = cs8 = cs9 = cs10 = 0;
-            List<object> AllSegments = new List<object>();
+            iid=ims=ifn=iem =txc = txt = inl = txd = inc = sg1 = sg2 = qnp = vl1 = qcm = vl2 = asd = lct = cs1 = cs2 = cs3 = cs4 = cs5 = cs6 = cs7 = cs8 = cs9 = cs10=que = 0;
 
-            List<InviteeSegment> tempSegments = new List<InviteeSegment>();
 
-            List<SegmentColumn> AllOf = new List<SegmentColumn>();
+            List<SegmentColumn> allSegments = new List<SegmentColumn>();
             SegmentColumn segmentList = new SegmentColumn();
-            List<InviteeSegment> newSegments = new List<InviteeSegment>();
+            List<InviteeSegment> newSegment = new List<InviteeSegment>();
+
+            List<QuestionColumn> allQuestions =new();
+            QuestionColumn questionList=new();
+            List<InviteeAnswer> newAnswers=new();
+
             var aa = ws.Cells;
             try
             {
@@ -145,10 +148,15 @@ namespace UploadInviteewithAnswersClient
                     if (aa[1, col1].Value.ToString().Contains("Question2Value")) { vl2 = col1; }
                     if (aa[1, col1].Value.ToString().Contains("InviteeSegment"))
                     {
-                        string rowValue = aa[1, col1].Value.ToString().Remove(0, 15).ToString();
-                        InviteeSegment invSegment1 = new InviteeSegment(rowValue, col1.ToString());
-                        segmentList = new SegmentColumn(col1, rowValue);
-                        AllOf.Add(segmentList);
+                        string SegmentRowValue = aa[1, col1].Value.ToString().Remove(0, 15).ToString();
+                        segmentList = new SegmentColumn(col1, SegmentRowValue);
+                        allSegments.Add(segmentList);
+                    }
+                    if((aa[1, col1].Value.ToString().Contains("Questi213213on_")))
+                    {
+                        string QuestionRowValue=aa[1,col].Value.ToString().Remove(0,9).ToString();
+                        questionList=new QuestionColumn(col,QuestionRowValue);
+                        allQuestions.Add(questionList);
                     }
 
                 }
@@ -167,10 +175,10 @@ namespace UploadInviteewithAnswersClient
                     p.TransactionDate = txd > 0 && aa[row, txd].Value != null ? aa[row, txd].Value.ToString() : DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss");
                     p.InteractionChannel = inc > 0 && aa[row, inc].Value != null ? aa[row, inc].Value.ToString() : "8";
 
-                    if (AllOf.Count > 0)
+                    if (allSegments.Count > 0)
                     {
                         {
-                            foreach (var item in AllOf) //createNewColumnHeadClass
+                            foreach (var item in allSegments) //createNewColumnHeadClass
                             {
                                 if (aa[row, item.ColumnId].Value!=null)
                                 {
@@ -178,7 +186,7 @@ namespace UploadInviteewithAnswersClient
                                     {
                                         InviteeSegment newsegments = new InviteeSegment(
                                         item.ColumnTitle, aa[row, item.ColumnId].Value.ToString());
-                                        newSegments.Add(newsegments);
+                                        newSegment.Add(newsegments);
                                     }
                                     catch (Exception)
                                     {
@@ -192,13 +200,13 @@ namespace UploadInviteewithAnswersClient
                     }
                     p.InviteeSegments=new List<InviteeSegment>();
 
-                    foreach (var newsegment in newSegments)
+                    foreach (var eachsegment in newSegment)
                     {
                         int i = 0;
 
                         try
                         {
-                            p.InviteeSegments.Add(newsegment);
+                            p.InviteeSegments.Add(eachsegment);
                         }
                         catch (Exception)
                         {
@@ -236,7 +244,7 @@ namespace UploadInviteewithAnswersClient
                     p.CustomData10 = cs10 > 0 && aa[row, cs10].Value != null ? aa[row, cs10].Value?.ToString() : "";
 
                     output.Add(p);
-                    newSegments.Clear();
+                    newSegment.Clear();
                     row++;
 
                 }

@@ -1,14 +1,14 @@
 namespace UploadInviteewithAnswersClient
 {
-    public class SegmentColumn
+    public class QuestionColumn
     {
         public int ColumnId { get; set; }
         public string ColumnTitle { get; set; }
-        public SegmentColumn()
+        public QuestionColumn()
         {
         }
 
-        public SegmentColumn(int id, string tittle)
+        public QuestionColumn(int id, string tittle)
         {
             this.ColumnId = id;
             this.ColumnTitle = tittle;

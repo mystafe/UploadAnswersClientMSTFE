@@ -2,27 +2,6 @@
 
 namespace UploadInviteewithAnswersClient
 {
-    public class InviteeSegment
-    {
-        public InviteeSegment(string segmentGroupName, string segmentId)
-        {
-            this.SegmentGroupName = segmentGroupName;
-            this.SegmentId = segmentId;
-
-        }
-        public string SegmentGroupName { get; set; }
-        public string SegmentId { get; set; }
-
-
-    }
-
-    public class InviteeAnswer
-    {
-        public string QuestionIntegrationCode { get; set; }
-        public string Value { get; set; }
-        public string AnsweredDate { get; set; }
-    }
-
     public class Invitee
     {
 
