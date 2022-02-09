@@ -116,7 +116,7 @@ namespace UploadInviteewithAnswersClient
                     if (aa[1, col1].Value.ToString().Trim().ToLower()=="inviteeid") { iid = col1; }
                     if ((aa[1, col1].Value.ToString().Trim().ToLower()=="inviteemsisdn")|| (aa[1, col1].Value.ToString().Trim().ToLower()=="msisdn"))
                      { ims = col1; }
-                    if ((aa[1, col1].Value.ToString().Trim().ToLower()=="inviteefullname")|| (aa[1, col1].Value.ToString().Trim().ToLower()=="fullname"))
+                    if ((aa[1, col1].Value?.ToString().Trim().ToLower()=="inviteefullname")|| (aa[1, col1].Value.ToString().Trim().ToLower()=="fullname"))
                      { ifn = col1; }
                     if ((aa[1, col1].Value.ToString().Trim().ToLower()=="inviteeemail")|| (aa[1, col1].Value.ToString().Trim().ToLower()=="email"))
                      { iem = col1; }
@@ -124,12 +124,12 @@ namespace UploadInviteewithAnswersClient
                      { inl = col1; }
                     if ((aa[1, col1].Value.ToString().Trim().ToLower()=="inviteelocation")|| (aa[1, col1].Value.ToString().Trim().ToLower()=="location"))
                      { lct = col1; }
-                    if (aa[1, col1].Value.ToString().Trim().ToLower()=="transactionchannel") { txc = col1; }
-                    if (aa[1, col1].Value.ToString().Trim().ToLower()=="transactiontype") { txt = col1; }
-                    if (aa[1, col1].Value.ToString().Trim().ToLower()=="transactiondate") { txd = col1; }
-                    if (aa[1, col1].Value.ToString().Trim().ToLower()=="interactionchannel") { inc = col1; }
-                    if (aa[1, col1].Value.ToString().Trim().ToLower()=="answereddate") { asd = col1; }
-                    if (aa[1, col1].Value.ToString().Trim().ToLower()=="customdata1") { cs1 = col1; }
+                    if (aa[1, col1].Value?.ToString().Trim().ToLower()=="transactionchannel") { txc = col1; }
+                    if (aa[1, col1].Value?.ToString().Trim().ToLower()=="transactiontype") { txt = col1; }
+                    if (aa[1, col1].Value?.ToString().Trim().ToLower()=="transactiondate") { txd = col1; }
+                    if (aa[1, col1].Value?.ToString().Trim().ToLower()=="interactionchannel") { inc = col1; }
+                    if (aa[1, col1].Value?.ToString().Trim().ToLower()=="answereddate") { asd = col1; }
+                    if (aa[1, col1].Value?.ToString().Trim().ToLower()=="customdata1") { cs1 = col1; }
                     if (aa[1, col1].Value.ToString().Trim().ToLower() == "customdata2") { cs2 = col1; }
                     if (aa[1, col1].Value.ToString().Trim().ToLower() == "customdata3") { cs3 = col1; }
                     if (aa[1, col1].Value.ToString().Trim().ToLower() == "customdata4") { cs4 = col1; }
@@ -219,7 +219,7 @@ namespace UploadInviteewithAnswersClient
                         new()
                         {
                             QuestionIntegrationCode = qcm > 0 && aa[row, qcm].Value != null ? aa[row, qcm].Value.ToString() : "STGCOMMENT",
-                            Value = vl2 > 0 && aa[row, vl2].Value != null ? aa[row, vl2].Value?.ToString() : "",
+                            Value = vl2 > 0 && aa[row, vl2].Value != null ? aa[row, vl2].Value?.ToString() : "Test",
                             AnsweredDate = asd > 0 && aa[row, asd].Value != null ? aa[row, asd].Value.ToString() : DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")
                         }
                     };
